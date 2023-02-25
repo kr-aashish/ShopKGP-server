@@ -1,0 +1,23 @@
+{
+  "name": "shopkgp",
+  "version": "3.0.0",
+  "description": "An internal refurbished products E-commerce platform for the KGP marketplace",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kr-aashish/ShopKGP.git"
+  },
+  "keywords": [
+    "recommerce",
+    "ecommerce"
+  ],
+  "author": "Aashish Kumar <jmphedaashish@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kr-aashish/ShopKGP/issues"
+  },
+  "homepage": "https://github.com/kr-aashish/ShopKGP#readme"
+}
