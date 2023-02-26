@@ -4,8 +4,9 @@ const { product } = require('../models')
 
 const {v4: uuidv4} = require('uuid');
 
-router.get('/', (req, res) => {
-    res.json('Hello!');
+router.get('/', async (req, res) => {
+    const allProducts = await product.findAll();
+    res.json(allProducts);
 });
 
 router.post("/", async (req, res) => {
