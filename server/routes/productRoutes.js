@@ -2,29 +2,14 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
 
-router.get('/', async (req, res) => {
-    try {
-        const allProducts = await productController.getAllProducts();
-        res.status(200).json(allProducts);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'unable to fetch all products',
-        });
-    }
-});
+router.get('/', productController.getAllProducts);
 
-router.post("/", async (req, res) => {
-    try {
-        const productData = req.body;
-        const productMetaData = await productController.createProduct(productData);
-        res.status(200).json(productMetaData);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error creating product',
-        });
-    }
-});
+router.get('/:id', productController.getProductbyId);
+
+router.post('/', productController.createProduct);
+
+router.put('/:id', productController.updateProduct);
+
+router.delete('/:id', productController.deleteProduct);
 
 module.exports = router;

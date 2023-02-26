@@ -4,7 +4,6 @@ const app = express();
 app.use(express.json()); //for post request body as json..parse!
 
 const db = require('./models');
-const { post } = require('./routes/productRoutes');
 
 //Routers
 const productRouter = require('./routes/productRoutes')
