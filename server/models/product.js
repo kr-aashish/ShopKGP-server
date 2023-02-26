@@ -1,0 +1,31 @@
+module.exports = (sequelize, DataTypes) => {
+    const product = sequelize.define("product", {
+        itemId: {
+            type: DataTypes.UUID, 
+            defaultValue: sequelize.UUIDV4, 
+            primaryKey: true,
+        }, 
+        name: {
+            type: DataTypes.STRING, 
+            allowNull: false,
+        }, 
+        description: {
+            type: DataTypes.TEXT, 
+            allowNull: false,
+        }, 
+        price: {
+            type: DataTypes.DECIMAL(10, 2), 
+            allowNull: false,
+        }, 
+        imageUrl: {
+            type: DataTypes.STRING, 
+            allowNull: false,
+        }, 
+        category: {
+            type: DataTypes.ENUM('electronics', 'books', 'misc'),
+            allowNull: true,
+        },
+    });
+
+    return product;
+}
