@@ -1,22 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const { product } = require('../models')
-const getRandomUuid = require('../utils/generateUuid')
+const productController = require('../controllers/productController');
 
 router.get('/', async (req, res) => {
-    const allProducts = await product.findAll();
-    res.json(allProducts);
+    try {
+        const allProducts = await productController.getAllProducts();
+        res.status(200).json(allProducts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: 'unable to fetch all products',
+        });
+    }
 });
 
 router.post("/", async (req, res) => {
-    let {itemId, sellerId, name, description, price, imageUrl, category} = req.body;
-
-    itemId = itemId.length ? itemId : getRandomUuid();
-    sellerId = sellerId.length ? sellerId : getRandomUuid();
-
-    const productData = {itemId, sellerId, name, description, price, imageUrl, category};
-    await product.create(productData);
-    res.json(productData);
+    try {
+        const productData = req.body;
+        const productMetaData = await productController.createProduct(productData);
+        res.status(200).json(productMetaData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: 'Error creating product',
+        });
+    }
 });
 
 module.exports = router;
