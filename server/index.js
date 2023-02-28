@@ -18,6 +18,7 @@ db.sequelize.sync().then(() => {
     })
 });
 
+//index2
 const http = require("http");
 const application = require("./app");
 const server = http.createServer(application);
