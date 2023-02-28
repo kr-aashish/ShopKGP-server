@@ -9,17 +9,19 @@ function App() {
     const prodApiEndpoint = devConfig.apiEndpoints.product;
     const { data, loading, error } = useFetch(prodApiEndpoint);
 
+    useEffect(() => {
+        if (data) {
+            setAllProducts(data);
+        }
+    }, [data]);
+
     if (loading) {
         return <>Loading...</>
     }
     if (error) {
         return <>Error: {error.message}</>
     }
-    
-    useEffect(() => {
-        setAllProducts(data);
-      }, []);
-      
+
     console.log(allProducts);
 
     return (
