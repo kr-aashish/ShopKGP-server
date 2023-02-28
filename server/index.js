@@ -17,3 +17,14 @@ db.sequelize.sync().then(() => {
         console.log('Server is running on port 3001');
     })
 });
+
+const http = require("http");
+const application = require("./app");
+const server = http.createServer(application);
+
+const { API_PORT } = process.env;
+const port = API_PORT || 8000;
+
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
