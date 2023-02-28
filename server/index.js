@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 app.use(express.json()); //for post request body as json..parse!
+app.use(cors());//to whitelist the api request
 
 const db = require('./models');
 
