@@ -1,8 +1,11 @@
 import './styles/App.css';
 import useFetch from './hooks/useFetch';
 import devConfig from './config/dev'
+import { useState } from 'react';
 
 function App() {
+    const [allProducts, setAllProducts] = useState([]);
+
     const prodApiEndpoint = devConfig.apiEndpoints.product;
     const { data, loading, error } = useFetch(prodApiEndpoint);
 
@@ -14,14 +17,11 @@ function App() {
     }
 
     console.log(data);
+    setAllProducts(data);
+    console.log(allProducts);
 
     return (
         <>
-        {/* <ul>
-            {data.map((product) => (
-                <li key={product.name}>{product.description}</li>
-            ))}
-        </ul> */}
         </>
     );
 };
