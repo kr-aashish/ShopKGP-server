@@ -1,7 +1,7 @@
 import './styles/App.css';
 import useFetch from './hooks/useFetch';
 import devConfig from './config/dev'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
     const [allProducts, setAllProducts] = useState([]);
@@ -15,9 +15,11 @@ function App() {
     if (error) {
         return <>Error: {error.message}</>
     }
-
-    console.log(data);
-    setAllProducts(data);
+    
+    useEffect(() => {
+        setAllProducts(data);
+      }, []);
+      
     console.log(allProducts);
 
     return (
