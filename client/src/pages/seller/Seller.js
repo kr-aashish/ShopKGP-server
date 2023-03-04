@@ -11,13 +11,19 @@ import {
   Grid,
   IconButton,
   makeStyles,
+  MenuItem,
   TextField,
-  Typography
+  Typography,
+  Select
 } from "@material-ui/core";
 import {
   AddCircleOutline as AddCircleOutlineIcon,
+  FormatBoldSharp,
   PhotoCamera as PhotoCameraIcon
 } from "@material-ui/icons";
+import axios from 'axios';
+import devConfig from '../../config/dev';
+
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -77,6 +83,7 @@ function SellerInterface() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
+  const [category, setCategory] = useState("");
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -90,12 +97,34 @@ function SellerInterface() {
     setPrice(event.target.value);
   };
 
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
+
   const handleImageChange = (event) => {
     setImage(URL.createObjectURL(event.target.files[0]));
   };
 
   const handleAddProduct = () => {
-    // TODO: Implement product upload logic
+    const prodApiEndpoint = devConfig.apiEndpoints.createProduct;
+
+    axios.post(prodApiEndpoint, {
+      itemId: "",
+      sellerId: "",
+      name: title, 
+      description: description,
+      price: price, 
+      imageUrl: image, 
+      category: category  
+    })      
+    .then((response) => {
+        console.log(response);
+        alert('Product added succesfully!');
+      })
+      .catch((error) => {
+        console.log(error);
+        alert('Error adding product');
+      })
   };
 
   return (
@@ -134,6 +163,24 @@ function SellerInterface() {
                 onChange={handlePriceChange}
                 margin="normal"
               />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box mt={2} mb={1}>
+                <Typography variant="subtitle1">
+                  Category
+                </Typography>
+              </Box>
+              <Select
+                labelId="category-label"
+                id="category"
+                value={category}
+                onChange={handleCategoryChange}
+                fullWidth
+              >
+                <MenuItem value="books">Book</MenuItem>
+                <MenuItem value="electronics">Electronics</MenuItem>
+                <MenuItem value="misc">Misc</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -183,7 +230,6 @@ function SellerInterface() {
                 </label>
               </Card>
             </Grid>
-            <Grid item xs={12} md={6} />
           </Grid>
         </CardContent>
       </Card>
@@ -192,7 +238,7 @@ function SellerInterface() {
           variant="contained"
           color="primary"
           onClick={handleAddProduct}
-          disabled={!title || !description || !price || !image}
+          // disabled={!title || !description || !price || !image || !category}
           className={classes.addButton}
         >
           Add Product
@@ -200,6 +246,7 @@ function SellerInterface() {
       </Box>
     </Container>
   );
+  
 }  
 
 export default SellerInterface;

@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }, 
         category: {
-            type: DataTypes.ENUM('electronics', 'books', 'misc'),
+            type: DataTypes.STRING, 
             allowNull: false,
         },
     });

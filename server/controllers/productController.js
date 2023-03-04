@@ -32,10 +32,16 @@ const getAllProducts = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
+        console.log("This is the request", req.body);
         let {itemId, sellerId, name, description, price, imageUrl, category} = req.body;
 
-        itemId = itemId.length ? itemId : getRandomUuid();
-        sellerId = sellerId.length ? sellerId : getRandomUuid();
+        // itemId = itemId.length ? itemId : getRandomUuid();
+        // sellerId = sellerId.length ? sellerId : getRandomUuid();
+        itemId = itemId && itemId.length ? itemId : getRandomUuid();
+        sellerId = sellerId && sellerId.length ? sellerId : getRandomUuid();
+
+        console.log('This is the itemId', itemId);
+        console.log('This is the name', name);
 
         const productMetaData = await product.create({
             itemId, 
