@@ -12,6 +12,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import PrimaryButton from "../buttons/PrimaryButton";
+import StripeCheckout from "react-stripe-checkout";
+import axios from 'axios';
 
 function ElementTable({ data }) {
   return (
@@ -28,6 +30,28 @@ function ElementTable({ data }) {
       <Divider />
     </>
   );
+}
+
+async function handleToken(token, addresses) {
+  const product = {
+    name: "Sample product", 
+    price: 200,
+    description: "This is a sample product"
+  }
+  const response = await axios.post("http://localhost:3000/checkout", {token, product})
+  console.log(response.status);
+}
+
+function handleStripeCheckout(totalPrice) {
+  alert(`${totalPrice}`);
+  <StripeCheckout
+    stripeKey="pk_test_51MiJLISGFdXiDdCYLBEIOLFv6lSfw7pK2zV5VceYPUvxKYSiFY4rdVAJMdNzUqrQWkhsxlx72qrDxGOtpKUEvlpp00kfIxV7mg"
+    token={handleToken}
+    amount={totalPrice}
+    name="Sample Product"
+    billingAddress
+    shippingAddress
+  />
 }
 
 function Subtotal() {
@@ -68,7 +92,7 @@ function Subtotal() {
       <p style={{ marginTop: "10px", fontSize: "12px" }}>
         *Total price includes shipping, and service charges
       </p>
-      <PrimaryButton text={"proceed"} />
+      <PrimaryButton onClick={() => {handleStripeCheckout(getBasketTotal(basket) * 1.03)}} text={"proceed"} />
     </Box>
   );
 }

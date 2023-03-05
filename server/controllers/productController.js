@@ -40,9 +40,6 @@ const createProduct = async (req, res) => {
         itemId = itemId && itemId.length ? itemId : getRandomUuid();
         sellerId = sellerId && sellerId.length ? sellerId : getRandomUuid();
 
-        console.log('This is the itemId', itemId);
-        console.log('This is the name', name);
-
         const productMetaData = await product.create({
             itemId, 
             sellerId, 
