@@ -42,22 +42,18 @@ async function handleToken(token, addresses) {
   console.log(response.status);
 }
 
-function handleStripeCheckout(totalPrice) {
-  alert(`${totalPrice}`);
-  <StripeCheckout
-    stripeKey="pk_test_51MiJLISGFdXiDdCYLBEIOLFv6lSfw7pK2zV5VceYPUvxKYSiFY4rdVAJMdNzUqrQWkhsxlx72qrDxGOtpKUEvlpp00kfIxV7mg"
-    token={handleToken}
-    amount={totalPrice}
-    name="Sample Product"
-    billingAddress
-    shippingAddress
-  />
-}
-
 function Subtotal() {
   const [{ basket }, dispatch] = useStateValue();
 
-  console.log("This is the basket total", getBasketTotal(basket));
+  const handleToken = async (token, addresses) => {
+    const product = {
+      name: "Sample product",
+      price: 200,
+      description: "This is a sample product"
+    };
+    const response = await axios.post("http://localhost:3001/checkout", {token, product});
+    console.log(response.status);
+  }
 
   return (
     <Box
@@ -92,10 +88,20 @@ function Subtotal() {
       <p style={{ marginTop: "10px", fontSize: "12px" }}>
         *Total price includes shipping, and service charges
       </p>
-      <PrimaryButton onClick={() => {handleStripeCheckout(getBasketTotal(basket) * 1.03)}} text={"proceed"} />
+      <StripeCheckout
+        stripeKey="pk_test_51MiJLISGFdXiDdCYLBEIOLFv6lSfw7pK2zV5VceYPUvxKYSiFY4rdVAJMdNzUqrQWkhsxlx72qrDxGOtpKUEvlpp00kfIxV7mg"
+        token={handleToken}
+        amount={getBasketTotal(basket) * 1.03}
+        name="Sample Product"
+        billingAddress
+        shippingAddress
+      >
+        <PrimaryButton text={"proceed"} />
+      </StripeCheckout>
     </Box>
   );
 }
+
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
