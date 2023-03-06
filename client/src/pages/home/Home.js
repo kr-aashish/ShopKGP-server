@@ -42,15 +42,8 @@ function Home() {
   if (error) {
       return <>Error: {error.message}</>
   }
-  console.log(allProducts);
-
-  // return (
-  //     <> 
-  //         {allProducts.map((value, key) => {
-  //             return <>{value.name}</>;
-  //         })}
-  //     </>
-  // );
+  console.log("allProducts ", allProducts);
+  console.log("data ", data);
   
   return (
     <>
@@ -71,6 +64,11 @@ function Home() {
               price={v.price}
               rating={v.rating}
               image={v.image}
+              // id={v.itemId}
+              // title={v.description}
+              // price={v.price}
+              // rating={5}
+              // image={v.imageUrl}
             />
           </Grid>
         ))}
