@@ -23,6 +23,7 @@ import {
 } from "@material-ui/icons";
 import axios from 'axios';
 import devConfig from '../../config/dev';
+import Swal from 'sweetalert2';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -119,11 +120,22 @@ function SellerInterface() {
     })      
     .then((response) => {
         console.log(response);
-        alert('Product added succesfully!');
+        Swal.fire({
+          icon: 'success',
+          title: 'Product added successfully!',
+          iconColor: 'orange',
+          showConfirmButton: false,
+          timer: 2500
+        });
       })
       .catch((error) => {
         console.log(error);
-        alert('Error adding product');
+        Swal.fire({
+          title: "Oops!",
+          text: "Something went wrong.",
+          icon: "error",
+          button: "Ok",
+        });
       })
   };
 
