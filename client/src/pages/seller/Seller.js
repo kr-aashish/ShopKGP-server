@@ -193,6 +193,13 @@ function SellerInterface() {
           button: "Ok",
         });
       })
+      .finally (() => {
+        setTitle("");
+        setDescription("");
+        setPrice("");
+        setImage("");
+        setCategory("");
+      })
   };
 
   return (
