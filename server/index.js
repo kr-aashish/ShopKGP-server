@@ -19,8 +19,8 @@ app.use('/checkout', checkoutRouter);
 
 //check if every single table exists in the database, if it don't, create it!
 db.sequelize.sync().then(() => {
-    app.listen(3001, () => {
-        console.log('Server is running on port 3001');
+    app.listen(4000, () => {
+        console.log('Server is running on port 4000');
     })
 });
 
