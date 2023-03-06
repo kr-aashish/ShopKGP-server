@@ -241,7 +241,7 @@ function SellerInterface() {
             </Grid>
             <Grid item xs={12} md={6}>
               <Box mt={2} mb={1}>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" style={{color: 'grey', fontSize: '16px'}}>
                   Category
                 </Typography>
               </Box>
