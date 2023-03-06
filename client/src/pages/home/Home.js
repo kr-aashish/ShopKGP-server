@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import { data } from "../../data/products";
 import { Box } from "@mui/system";
 import PrimarySearchAppBar from "../../components/appbar/Appbar";
+import Footer from "../../components/footer/Footer";
 
 import devConfig from '../../config/dev';
 import { useState, useEffect} from 'react';
@@ -74,6 +75,7 @@ function Home() {
           </Grid>
         ))}
       </Grid>
+      <Footer/>
     </>
   );
 }

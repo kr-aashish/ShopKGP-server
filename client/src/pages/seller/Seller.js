@@ -132,7 +132,7 @@ function SellerInterface() {
         console.log(error);
         Swal.fire({
           title: "Oops!",
-          text: "Something went wrong.",
+          text: "Please add all the required details",
           icon: "error",
           button: "Ok",
         });
