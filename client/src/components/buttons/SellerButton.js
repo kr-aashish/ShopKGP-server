@@ -9,7 +9,7 @@ const SellerButton = ({ onClick, text }) => {
       sx={{
         marginTop: "5px",
         textTransform: "capitalize",
-        maxWidth: "60%",
+        maxWidth: "70%",
         padding: "10px 40px",
         backgroundColor: "var(--orange)",
         color: "#fff",
@@ -22,13 +22,13 @@ const SellerButton = ({ onClick, text }) => {
         flex: 1,
         transition: "0.3s",
         boxShadow: "0px 10px 20px -8px var(--pale-orange)",
-        "&:hover": {
-          backgroundColor: "var(--orange-hover)",
-          boxShadow: "0px 15px 25px -10px var(--pale-orange-hover)",
+        "&:active": {
+          boxShadow: "none",
+          backgroundColor: "var(--orange)",
         },
       }}
     >
-      Seller Tool
+      {text}
     </Button>
   );
 };

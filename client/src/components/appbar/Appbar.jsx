@@ -199,11 +199,13 @@ export default function PrimarySearchAppBar() {
             {/*</IconButton>*/}
             
             <SellerButton onClick={() => goToPath("/seller")} text="Seller Tool"/>
-            <IconButton>
+            
+            {/* <IconButton>
               <Badge onClick = {() => goToPath("/seller")}>
                 <AddCircleOutlineIcon style={{ color: "black" }} />
               </Badge>
-            </IconButton>
+            </IconButton> */}
+            
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
