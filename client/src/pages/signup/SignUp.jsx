@@ -25,12 +25,12 @@ export function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
+      {"© "}
       <Link color="inherit" href="http://iitkgp.ac.in">
-        Shopkgp
+        ShopKGP
       </Link>{" "}
       {new Date().getFullYear()}
-      {"."}
+      {". All rights reserved."}
     </Typography>
   );
 }

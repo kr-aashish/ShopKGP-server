@@ -3,6 +3,7 @@ import "./Footer.css";
 import { Grid, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, YouTube } from "@mui/icons-material";
+import { Copyright } from "../../pages/signup/SignUp";
 
 function Footer() {
   return (
@@ -12,7 +13,7 @@ function Footer() {
         <Grid item xs={12} md={3} paddingLeft={2}>
           <Typography variant="h6">ShopKGP</Typography>
           <Typography variant="body1" className="footer-about">
-            ShopKGP is an ecommerce platform that allows buyers and sellers to connect with each other.
+            ShopKGP is a recommerce platform that allows buyers and sellers to connect with each other.
           </Typography>
         </Grid>
 
@@ -79,7 +80,7 @@ function Footer() {
             </li>
             <li>
               <Typography variant="body1">
-                Address: XYZ, Kharagpur, West Bengal, India
+                Address: RMSoEE, IIT Kharagpur, West Bengal, India
               </Typography>
             </li>
           </ul>
@@ -87,9 +88,7 @@ function Footer() {
 
     
       </Grid>
-      <Typography variant="body1" className="footer-legal">
-        © 2023 ShopKGP. All rights reserved.
-      </Typography>
+        <Copyright sx={{ mt: 1, py: 3, color: "white" }}/>
     </Box>
   );
 }
