@@ -24,6 +24,7 @@ import {
 import axios from 'axios';
 import devConfig from '../../config/dev';
 import Swal from 'sweetalert2';
+import AWS from 'aws-sdk';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,7 +84,8 @@ function SellerInterface() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
+  // const [imageFile, setImageFile] = useState("");
   const [category, setCategory] = useState("");
 
   const handleTitleChange = (event) => {
@@ -102,11 +104,65 @@ function SellerInterface() {
     setCategory(event.target.value);
   };
 
-  const handleImageChange = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]));
-  };
+  const s3 = new AWS.S3({
+    accessKeyId: 'AKIAVO4R5EPKIYI3H7HH',
+    secretAccessKey: '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',
+    region: 'ap-northeast-1'
+  });
 
+  // const handleImageChange = (event) => {
+  //   setImage(URL.createObjectURL(event.target.files[0]));
+  //   setImageFile(event.target.files[0]);
+  // };
+
+  const handleImageChange = async (event) => {
+    try {
+      let timerInterval;
+      Swal.fire({
+        title: 'Uploading your media',
+        html: 'It will be complete in <b></b> milliseconds.',
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading()
+          const b = Swal.getHtmlContainer().querySelector('b')
+          timerInterval = setInterval(() => {
+            b.textContent = Swal.getTimerLeft()
+          }, 100)
+        },
+        willClose: () => {
+          clearInterval(timerInterval)
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log('I was closed by the timer')
+        }
+      })
+
+      const file = event.target.files[0];
+      // setImage(URL.createObjectURL(file));
+      // setImageFile(file);
+      const fileName = `${Date.now()}-${file.name}`;
+      const params = {
+        Bucket: 'shopkgp-media',
+        Key: fileName,
+        Body: file,
+        ACL: 'public-read',
+      };
+      await s3.upload(params).promise();
+      console.log('File uploaded successfully');
+
+      const imageUrl = `https://shopkgp-media.s3.amazonaws.com/${fileName}`;
+      setImage(imageUrl);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   const handleAddProduct = () => {
+
     const prodApiEndpoint = devConfig.apiEndpoints.createProduct;
 
     axios.post(prodApiEndpoint, {
