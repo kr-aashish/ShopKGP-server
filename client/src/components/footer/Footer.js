@@ -27,10 +27,10 @@ function Footer() {
               <Link to="/seller">Sell a product</Link>
             </li>
             <li>
-              <Link to="/">About Us</Link>
+              <Link to="/error">About Us</Link>
             </li>
             <li>
-              <Link to="/account/12">Contact Us</Link>
+              <Link to="/error">Contact Us</Link>
             </li>
           </ul>
         </Grid>
