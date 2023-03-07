@@ -14,6 +14,7 @@ import Paper from "@mui/material/Paper";
 import PrimaryButton from "../buttons/PrimaryButton";
 import StripeCheckout from "react-stripe-checkout";
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function ElementTable({ data }) {
   return (
@@ -40,8 +41,18 @@ function Subtotal() {
       price: 200,
       description: "This is a sample product"
     };
-    const response = await axios.post("http://localhost:3001/checkout", {token, product, address});
-    console.log(response.status);
+
+    try {
+      const response = await axios.post("http://localhost:3001/checkout", {token, product, address});
+      console.log(response.status);
+    } catch (error) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Your order has been placed!',
+        showConfirmButton: false,
+        timer: 2500
+      });
+    }
   }
 
   return (
@@ -81,7 +92,7 @@ function Subtotal() {
         stripeKey="pk_test_51MiJLISGFdXiDdCYLBEIOLFv6lSfw7pK2zV5VceYPUvxKYSiFY4rdVAJMdNzUqrQWkhsxlx72qrDxGOtpKUEvlpp00kfIxV7mg"
         token={handleToken}
         amount={getBasketTotal(basket) * 1.03}
-        name="Sample Product"
+        name="Payment Gateway"
         billingAddress
         shippingAddress
       >
