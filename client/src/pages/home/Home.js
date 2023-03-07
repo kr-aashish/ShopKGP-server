@@ -27,7 +27,7 @@ function Home() {
               });
           } catch (err) {
               setError(err);
-          } finally {
+          } finally { 
               setLoading(false);
           }
       };
@@ -44,11 +44,11 @@ function Home() {
   }
   console.log("allProducts ", allProducts);
   console.log("data ", data);
-  
+
   return (
     <>
       <Grid container paddingTop={"5px"}>
-        {data.map((v, index) => (
+        {allProducts.map((v, index) => (
           <Grid
             key={index}
             xs={12}
@@ -59,16 +59,16 @@ function Home() {
             justifyContent={"center"}
           >
             <Product
-              id={v.id}
-              title={v.title}
-              price={v.price}
-              rating={v.rating}
-              image={v.image}
-              // id={v.itemId}
-              // title={v.description}
+              // id={v.id}
+              // title={v.title}
               // price={v.price}
-              // rating={5}
-              // image={v.imageUrl}
+              // rating={v.rating}
+              // image={v.image}
+              id={v.itemId}
+              title={v.description}
+              price={parseInt(v.price)}
+              rating={5}
+              image={v.imageUrl}
             />
           </Grid>
         ))}

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 function Checkout() {
   const [{ basket, user }, dispatch] = useStateValue();
   const { user_dispatch, state } = useContext(UserContext);
+  console.log(basket);
 
   const navigate = useNavigate();
 
