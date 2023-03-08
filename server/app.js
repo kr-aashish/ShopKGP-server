@@ -97,7 +97,7 @@ app.get("/welcome", auth, (req, res) => {
   res.status(200).send("Welcome 🙌 ");
 });
 
-app.use("/api/product", auth, productRoute);
+// app.use("/api/product", auth, productRoute); //verify token before going to productController
 
 // This should be the last route else any after it won't work
 app.use("*", (req, res) => {
