@@ -21,12 +21,6 @@ app.post("/register", async (req, res) => {
     const { name, year, email, password, department } = req.body;
 
     // Validate user input
-    // if (!(email && password && name && year && department)) {
-    //   res.status(400).send("All input is required");
-    // }
-
-    // check if user already exist
-    // Validate if user exist in our database
     const oldUser = await User.findOne({ email });
 
     if (oldUser) {
