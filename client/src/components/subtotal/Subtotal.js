@@ -45,6 +45,8 @@ function Subtotal() {
     try {
       const response = await axios.post("http://localhost:3001/checkout", {token, product, address});
       console.log(response.status);
+
+      //clear the basket post successful checkout
     } catch (error) {
       Swal.fire({
         icon: 'success',
@@ -52,7 +54,7 @@ function Subtotal() {
         showConfirmButton: false,
         timer: 2500
       });
-    }
+    } 
   }
 
   return (
