@@ -20,10 +20,13 @@ app.use('/checkout', checkoutRouter);
 const authRouter = require('./routes/authRoutes');
 app.use('/auth', authRouter);
 
+const { API_PORT } = process.env;
+const port = API_PORT || 4000;
+
 //check if every single table exists in the database, if it don't, create it!
 db.sequelize.sync().then(() => {
-    app.listen(4000, () => {
-        console.log('Server is running on port 4000');
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
     })
 });
 
@@ -31,9 +34,6 @@ db.sequelize.sync().then(() => {
 // const http = require("http");
 // const application = require("./app");
 // const server = http.createServer(application);
-
-// const { API_PORT } = process.env;
-// const port = API_PORT || 8000;
 
 // server.listen(port, () => {
 //   console.log(`Server running on port ${port}`);
