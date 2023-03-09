@@ -30,14 +30,14 @@ const userSignup = async(req, res) => {
             year, 
         });
 
-        const token = jwt.sign (
-            {user_id: userId, email}, 
-            process.env.TOKEN_KEY, 
-            {
-                expiresIn: "2h",
-            }
-        );
-        userMetaData.token = token;
+        // const token = jwt.sign (
+        //     {user_id: userId, email}, 
+        //     process.env.TOKEN_KEY, 
+        //     {
+        //         expiresIn: "2h",
+        //     }
+        // );
+        // userMetaData.token = token;
 
         res.status(200).json(userMetaData);
     } catch (error) {
@@ -60,14 +60,14 @@ const userLogin = async(req, res) => {
         const user = await users.findOne({where : {email}});
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign(
-                {user_id: user.userId, email}, 
-                process.env.TOKEN_KEY, 
-                {
-                    expiresIn: "2h",
-                }
-            )
-            user.token = token;
+            // const token = jwt.sign(
+            //     {user_id: user.userId, email}, 
+            //     process.env.TOKEN_KEY, 
+            //     {
+            //         expiresIn: "2h",
+            //     }
+            // )
+            // user.token = token;
             res.status(200).json(user);
         }
         else {
