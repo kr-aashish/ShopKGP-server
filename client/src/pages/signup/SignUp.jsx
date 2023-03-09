@@ -52,14 +52,19 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    const name = data.get("firstName") + " " + data.get("lastName");
     const email = data.get("email");
+    const contactNumber = "8084662242";
     const password = data.get("password");
     const year = data.get("year");
     const roll = data.get("roll");
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}register`, {
-        email,
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}signup`, {
         password,
+        name, 
+        email,
+        contactNumber, 
+        year, 
       });
       console.log(res);
       if (res.status === 200) {

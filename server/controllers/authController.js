@@ -20,7 +20,6 @@ const userSignup = async(req, res) => {
         email = email.toLowerCase();
         const userId = getRandomUuid();
         encryptedPassword = await bcrypt.hash(password, 10);
-        console.log(encryptedPassword);
 
         const userMetaData = await users.create({
             userId, 
@@ -29,7 +28,6 @@ const userSignup = async(req, res) => {
             email,
             contactNumber,
             year, 
-            department
         });
 
         const token = jwt.sign (

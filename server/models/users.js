@@ -43,13 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    department: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        len: [2, 50]
-      }
-    },
   });
 
   return users;
