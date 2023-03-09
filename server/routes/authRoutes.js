@@ -6,4 +6,7 @@ router.post('/signup', authController.userSignup);
 
 router.post('/login', authController.userLogin);
 
+router.use('*', authController.handleAnyOtherCase);
+
+
 module.exports = router;

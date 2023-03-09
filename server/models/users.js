@@ -1,4 +1,4 @@
-// const { isEmail, isMobilePhone } = require('validator');
+const { isEmail, isMobilePhone } = require('validator');
 
 module.exports = (sequelize, DataTypes) => {
   const users = sequelize.define("users", {
@@ -7,49 +7,49 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: sequelize.UUIDV4,
       primaryKey: true,
     },
-    // password: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   // validate: {
-    //   //   notEmpty: true,
-    //   // }
-    // },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      }
+    },
     name: {
       type: DataTypes.STRING,
-      // allowNull: false,
-      // validate: {
-      //   notEmpty: true,
-      //   len: [2, 100]
-      // }
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [2, 100]
+      }
     },
-    // email: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   unique: true,
-    //   // validate: {
-    //   //   notEmpty: true,
-    //   //   isEmail: true
-    //   // }
-    // },
-    // contactNumber: {
-    //   type: DataTypes.STRING, 
-    //   allowNull: false,
-    //   // validate: {
-    //   //   notEmpty: true,
-    //   //   isMobilePhone: true,
-    //   // }
-    // },
-    // year: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    // },
-    // department: {
-    //   type: DataTypes.STRING,
-    //   allowNull: true,
-    //   // validate: {
-    //   //   len: [2, 50]
-    //   // }
-    // },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: true,
+        isEmail: true
+      }
+    },
+    contactNumber: {
+      type: DataTypes.STRING, 
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isMobilePhone: true,
+      }
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    department: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        len: [2, 50]
+      }
+    },
   });
 
   return users;

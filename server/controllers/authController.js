@@ -1,54 +1,51 @@
 const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const getRandomUuid = require('../utils/generateUuid')
 
-// const { sequelize, DataTypes } = require('sequelize');
-// const User = require('../models/userSchema')(sequelize, DataTypes);
 const {users} = require('../models');
 
-// const auth = require('../auth');
-// const user = require('../models/user');
+// const auth = require('../auth'); -> middleware authorisation check
+//e.g. // app.use("/api/product", auth, productRoute); //verify token before going to productController
 
 const userSignup = async(req, res) => {
     try {
         console.log("This is the request", req.body);
-        // const {name, email, contactNumber, year, department, password} = req.body;
-        const {name} = req.body;
-        console.log(name);
-        // const oldUser = await User.findOne({email});
+        let {name, email, contactNumber, year, department, password} = req.body;
+        const oldUser = await users.findOne({where: {email}});
 
-        // if (oldUser) {
-        //     return res.status(409).send("User already exist. Please login");
-        // }
+        if (oldUser) {
+            return res.status(409).send("User already exist. Please login");
+        }
 
-        // email = email.toLowerCase();
+        email = email.toLowerCase();
         const userId = getRandomUuid();
-        // const encryptedPassword = await bcrypt.hash(password, 10);
-
-        // console.log("This is the user", User);
+        encryptedPassword = await bcrypt.hash(password, 10);
+        console.log(encryptedPassword);
 
         const userMetaData = await users.create({
             userId, 
-            // encryptedPassword, 
+            password: encryptedPassword, 
             name, 
-            // email,
-            // contactNumber,
-            // year, 
-            // department
+            email,
+            contactNumber,
+            year, 
+            department
         });
 
-        // const userToken = jwt.sign(
-        //     {user_id: user._id, email}, 
-        //     process.env.TOKEN_KEY,
-        //     { expiresIn: "2h" }
-        // );
-        // user.token = userToken;
+        const token = jwt.sign (
+            {user_id: userId, email}, 
+            process.env.TOKEN_KEY, 
+            {
+                expiresIn: "2h",
+            }
+        );
+        userMetaData.token = token;
 
         res.status(200).json(userMetaData);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            message: 'Error creating product',
+        res.status(500).send({
+            message: 'Error creating user',
         });
     }
 }
@@ -62,13 +59,41 @@ const userLogin = async(req, res) => {
             return;
         }
 
-        const user = await User.findOne()
+        const user = await users.findOne({where : {email}});
+
+        if (user && (await bcrypt.compare(password, user.password))) {
+            const token = jwt.sign(
+                {user_id: user.userId, email}, 
+                process.env.TOKEN_KEY, 
+                {
+                    expiresIn: "2h",
+                }
+            )
+            user.token = token;
+            res.status(200).json(user);
+        }
+        else {
+            res.status(400).send("Invalid credentials");
+        }
+
     } catch(error) {
-        
+        console.log(error);
+        res.status(500).send({
+            message: "Internal Server error",
+        });
     }
+}
+
+const handleAnyOtherCase = (req, res) => {
+    res.status(404).send({
+        status: "false", 
+        message: "Page not found", 
+        error: "The endpoint does not exist for this api",
+    });
 }
 
 module.exports = {
     userSignup,
-    userLogin
+    userLogin, 
+    handleAnyOtherCase,
 }
