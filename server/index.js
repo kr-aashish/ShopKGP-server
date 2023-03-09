@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json()); //for post request body as json..parse!
 app.use(cors());//to whitelist the api request
 
@@ -16,6 +16,9 @@ app.use('/product', productRouter);
 
 const checkoutRouter = require('./routes/checkoutRoutes');
 app.use('/checkout', checkoutRouter);
+
+const authRouter = require('./routes/authRoutes');
+app.use('/auth', authRouter);
 
 //check if every single table exists in the database, if it don't, create it!
 db.sequelize.sync().then(() => {

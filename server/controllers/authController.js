@@ -1,40 +1,55 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+const getRandomUuid = require('../utils/generateUuid')
 
-const User = require('../models/user');
-const auth = require('../auth');
-const user = require('../models/user');
+// const { sequelize, DataTypes } = require('sequelize');
+// const User = require('../models/userSchema')(sequelize, DataTypes);
+const users = require('../models');
+
+// const auth = require('../auth');
+// const user = require('../models/user');
 
 const userSignup = async(req, res) => {
     try {
-        const {name, year, email, password, department} = req.body;
+        console.log("This is the request", req.body);
+        // const {name, email, contactNumber, year, department, password} = req.body;
+        const {name} = req.body;
+        console.log(name);
+        // const oldUser = await User.findOne({email});
 
-        const oldUser = await User.findOne({email});
+        // if (oldUser) {
+        //     return res.status(409).send("User already exist. Please login");
+        // }
 
-        if (oldUser) {
-            return res.status(409).send("User already exist. Please login");
-        }
+        // email = email.toLowerCase();
+        // const userId = getRandomUuid();
+        // const encryptedPassword = await bcrypt.hash(password, 10);
 
-        encryptedPassword = await bcrypt.hash(password, 10);
+        // console.log("This is the user", User);
 
-        const user = await User.create({
+        const userMetaData = await users.create({
+            // userId, 
+            // encryptedPassword, 
             name, 
-            year, 
-            department, 
-            email: email.toLowerCase(),
-            password: encryptedPassword,
+            // email,
+            // contactNumber,
+            // year, 
+            // department
         });
 
-        const userToken = jwt.sign(
-            {user_id: user._id, email}, 
-            process.env.TOKEN_KEY,
-            { expiresIn: "2h" }
-        );
-        user.token = userToken;
+        // const userToken = jwt.sign(
+        //     {user_id: user._id, email}, 
+        //     process.env.TOKEN_KEY,
+        //     { expiresIn: "2h" }
+        // );
+        // user.token = userToken;
 
-        res.status(200).json(user);
+        res.status(200).json("Sucess");
     } catch (error) {
         console.log(error);
+        res.status(500).json({
+            message: 'Error creating product',
+        });
     }
 }
 
@@ -51,4 +66,9 @@ const userLogin = async(req, res) => {
     } catch(error) {
         
     }
+}
+
+module.exports = {
+    userSignup,
+    userLogin
 }
