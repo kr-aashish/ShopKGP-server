@@ -1,12 +1,12 @@
-const { isEmail, isMobilePhone } = require('validator');
+// const { isEmail, isMobilePhone } = require('validator');
 
 module.exports = (sequelize, DataTypes) => {
-  const users = sequelize.define('users', {
-    // userId: {
-    //   type: DataTypes.UUID,
-    //   defaultValue: sequelize.UUIDV4,
-    //   primaryKey: true,
-    // },
+  const users = sequelize.define("users", {
+    userId: {
+      type: DataTypes.UUID,
+      defaultValue: sequelize.UUIDV4,
+      primaryKey: true,
+    },
     // password: {
     //   type: DataTypes.STRING,
     //   allowNull: false,

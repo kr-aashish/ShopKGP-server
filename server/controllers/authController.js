@@ -4,7 +4,7 @@ const getRandomUuid = require('../utils/generateUuid')
 
 // const { sequelize, DataTypes } = require('sequelize');
 // const User = require('../models/userSchema')(sequelize, DataTypes);
-const users = require('../models');
+const {users} = require('../models');
 
 // const auth = require('../auth');
 // const user = require('../models/user');
@@ -22,13 +22,13 @@ const userSignup = async(req, res) => {
         // }
 
         // email = email.toLowerCase();
-        // const userId = getRandomUuid();
+        const userId = getRandomUuid();
         // const encryptedPassword = await bcrypt.hash(password, 10);
 
         // console.log("This is the user", User);
 
         const userMetaData = await users.create({
-            // userId, 
+            userId, 
             // encryptedPassword, 
             name, 
             // email,
@@ -44,7 +44,7 @@ const userSignup = async(req, res) => {
         // );
         // user.token = userToken;
 
-        res.status(200).json("Sucess");
+        res.status(200).json(userMetaData);
     } catch (error) {
         console.log(error);
         res.status(500).json({
