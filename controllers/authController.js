@@ -30,20 +30,10 @@ const userSignup = async(req, res) => {
             year, 
         });
 
-        const token = jwt.sign (
-            {userId: userId, email},
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: "2h",
-            }
-        );
-        userMetaData.token = token;
-
         res.status(200).json(userMetaData);
     } catch (error) {
-        console.log(error);
         res.status(500).send({
-            message: 'Error creating user',
+            message:error.toString(),
         });
     }
 }
@@ -60,16 +50,8 @@ const userLogin = async(req, res) => {
         const user = await users.findOne({where : {email}});
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign(
-                {userId: user.userId, email},
-                process.env.TOKEN_KEY,
-                {
-                    expiresIn: "2h",
-                }
-            )
             res.status(200).json({
                 ...user.toJSON(),
-                token,
             });
         }
         else {
@@ -79,7 +61,7 @@ const userLogin = async(req, res) => {
     } catch(error) {
         console.log(error);
         res.status(500).send({
-            message: "Internal Server error",
+            message: error.toString(),
         });
     }
 }
@@ -87,15 +69,8 @@ const userLogin = async(req, res) => {
 const socialLogin = async(req, res) => {
     try {
         const {email} = req.body;
-
         const user = await users.findOne({where : {email}});
-
         if (user) {
-            const token = jwt.sign(
-                {userId: user.userId, email},
-                process.env.TOKEN_KEY,
-                {expiresIn: '2h'}
-            );
             res.status(200).json(user);
         }
         else {
@@ -105,7 +80,7 @@ const socialLogin = async(req, res) => {
     } catch(error) {
         console.log(error);
         res.status(500).send({
-            message: "Internal Server error",
+            message: error.toString(),
         });
     }
 }
