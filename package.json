@@ -37,5 +37,8 @@
     "sequelize-cli": "^6.6.0",
     "stripe": "^11.18.0",
     "validator": "^13.9.0"
+  },
+  "engines": {
+    "node": ">=16 <17"
   }
 }
