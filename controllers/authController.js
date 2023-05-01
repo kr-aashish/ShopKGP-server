@@ -9,7 +9,7 @@ const {users} = require('../models');
 
 const userSignup = async(req, res) => {
     try {
-        console.log("This is the request", req.body);
+        // console.log("This is the request", req.body);
         let {name, email, contactNumber, year, department, password} = req.body;
         const oldUser = await users.findOne({where: {email}});
 
@@ -30,14 +30,14 @@ const userSignup = async(req, res) => {
             year, 
         });
 
-        // const token = jwt.sign (
-        //     {user_id: userId, email}, 
-        //     process.env.TOKEN_KEY, 
-        //     {
-        //         expiresIn: "2h",
-        //     }
-        // );
-        // userMetaData.token = token;
+        const token = jwt.sign (
+            {userId: userId, email},
+            process.env.TOKEN_KEY,
+            {
+                expiresIn: "2h",
+            }
+        );
+        userMetaData.token = token;
 
         res.status(200).json(userMetaData);
     } catch (error) {
@@ -60,14 +60,42 @@ const userLogin = async(req, res) => {
         const user = await users.findOne({where : {email}});
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            // const token = jwt.sign(
-            //     {user_id: user.userId, email}, 
-            //     process.env.TOKEN_KEY, 
-            //     {
-            //         expiresIn: "2h",
-            //     }
-            // )
-            // user.token = token;
+            const token = jwt.sign(
+                {userId: user.userId, email},
+                process.env.TOKEN_KEY,
+                {
+                    expiresIn: "2h",
+                }
+            )
+            res.status(200).json({
+                ...user.toJSON(),
+                token,
+            });
+        }
+        else {
+            res.status(400).send("Invalid credentials");
+        }
+
+    } catch(error) {
+        console.log(error);
+        res.status(500).send({
+            message: "Internal Server error",
+        });
+    }
+}
+
+const socialLogin = async(req, res) => {
+    try {
+        const {email} = req.body;
+
+        const user = await users.findOne({where : {email}});
+
+        if (user) {
+            const token = jwt.sign(
+                {userId: user.userId, email},
+                process.env.TOKEN_KEY,
+                {expiresIn: '2h'}
+            );
             res.status(200).json(user);
         }
         else {
@@ -82,10 +110,14 @@ const userLogin = async(req, res) => {
     }
 }
 
+const welcomeMessage = (req, res) => {
+    res.status(200).send("Welcome 🙌");
+}
+
 const handleAnyOtherCase = (req, res) => {
     res.status(404).send({
         status: "false", 
-        message: "Page not found", 
+        message: "Invalid request",
         error: "The endpoint does not exist for this api",
     });
 }
@@ -94,4 +126,6 @@ module.exports = {
     userSignup,
     userLogin, 
     handleAnyOtherCase,
+    socialLogin,
+    welcomeMessage
 }

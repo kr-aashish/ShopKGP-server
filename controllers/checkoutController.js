@@ -1,65 +1,35 @@
-// const stripe = require('stripe')('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');
-const stripe = require('stripe')('sk_test_51MiJLISGFdXiDdCYguaI0zcO6jrZl57oqTrHvJp1noXxE6bBDQl8Jeq2DxHK90bZHDMSmjQfU4byPZdxGbAgZqBq00Kcs4NEME');
-const getRandomUuid = require('../utils/generateUuid')
+require('dotenv').config();
+
+// const stripe = require('stripe')('sk_test_51MuCNiSBkSkzOkBh9AXSdkcKz6N5PTHYmcowGfIFh1H9zOcCa1kZJi3rm6OIe3DYoVeSPq8MCrvje6t4fOkyCVJN00aqC2lz04');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const checkoutProduct = async (req, res) => {
-    console.log("This is the request", req.body);
+    // console.log("This is the request", req.body);
+    const {userMetadata, stripeItems, basket} = req.body;
+    const itemIdArray = basket.map(item => item.id);
+    // console.log(itemIdArray);
 
-    let error, status;
-    
-    try {
-        const { product, token } = req.body;
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: stripeItems,
+        mode: "payment",
+        success_url: `${process.env.REACT_APP_HOST_URL}/success`,
+        cancel_url: `${process.env.REACT_APP_HOST_URL}/error`,
+        metadata: {
+            userId: userMetadata.userId,
+            // images: JSON.stringify(basket.map(item => item.imageUrl)),
+            items: JSON.stringify(itemIdArray),
+        },
+        shipping_address_collection: {
+            allowed_countries: ['US', 'CA', 'IN'],
+        }
+    });
 
-        const customer = await stripe.customers.create({
-            email: token.email, 
-            source: token.id,
-            shipping: {
-                name: token.card.name,
-                address: {
-                    line1: token.card.address_line1,
-                    line2: token.card.address_line2,
-                    city: token.card.address_city,
-                    state: token.card.address_state,
-                    country: token.card.address_country,
-                    postal_code: token.card.address_zip,
-                }
-            }
-        });
+    // console.log(session);
+    const sessionId = session.id;
 
-        const key = getRandomUuid();
-
-        const charge = await stripe.charges.create({
-            amount: product.price, 
-            currency: "usd", 
-            customer: customer.id, 
-            description: product.description,
-            receipt_email: token.email,
-            shipping: {
-                name: token.card.name,
-                address: {
-                    line1: token.card.address_line1,
-                    line2: token.card.address_line2,
-                    city: token.card.address_city,
-                    state: token.card.address_state,
-                    country: token.card.address_country,
-                    postal_code: token.card.address_zip,
-                }
-            },
-            // metadata: {
-            //     order_id: key
-            // }
-        }, {
-            idempotencyKey: key
-        });
-
-        console.log(charge);
-        console.log("Success!");
-    } catch (error) {
-        console.log("Errro occured", error);
-        // res.sendStatus(500).json({"message": "Internal server error"});
-    }
-
-    // res.status(200).json({"data": "Sample response"});  
+    res.status(200)
+        .json({id: sessionId});
 }
 
 module.exports = { checkoutProduct };
