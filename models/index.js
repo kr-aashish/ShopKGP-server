@@ -1,52 +1,56 @@
+// 'use strict';
+
+// const fs = require('fs');
+// const path = require('path');
+// const Sequelize = require('sequelize');
+// const basename = path.basename(__filename);
+// const env = process.env.NODE_ENV || 'development';
+// const config = {
+//     username: 'shopkgp',
+//     password: '(@JEETMPHED01)',
+//     database: 'shopkgp',
+//     host: 'shopkgp.mysql.database.azure.com',
+//     dialect: 'mysql',
+//     dialectOptions: {
+//         ssl: {
+//             // ca: fs.readFileSync(path.join(__dirname, 'BaltimoreCyberTrustRoot.crt.pem')),
+//             rejectUnauthorized: false
+//         },
+//         // encrypt: true
+//     },
+//     logging: false,
+//     pool: {
+//         max: 500,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000,
+//     },
+// };
+// const db = {};
+
+// const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = {
-    username: 'shopkgp',
-    password: '(@JEETMPHED01)',
-    database: 'shopkgp',
-    host: 'shopkgp.mysql.database.azure.com',
-    dialect: 'mysql',
-    dialectOptions: {
-        ssl: {
-            // ca: fs.readFileSync(path.join(__dirname, 'BaltimoreCyberTrustRoot.crt.pem')),
-            rejectUnauthorized: false
-        },
-        // encrypt: true
-    },
-    logging: false,
-    pool: {
-        max: 500,
-        min: 0,
-        acquire: 30000,
-        idle: 10000,
-    },
-};
+const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
-
-// 'use strict';
-//
-// const fs = require('fs');
-// const path = require('path');
-// const Sequelize = require('sequelize');
-// const process = require('process');
-// const basename = path.basename(__filename);
-// const env = process.env.NODE_ENV || 'development';
-// const config = require(__dirname + '/../config/config.json')[env];
-// const db = {};
-//
-// let sequelize;
-// if (config.use_env_variable) {
-//     sequelize = new Sequelize(process.env[config.use_env_variable], config);
-// } else {
-//     sequelize = new Sequelize(config.database, config.username, config.password, config);
-// }
+let sequelize;
+try {
+  if (config.use_env_variable) {
+      sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  } else {
+      sequelize = new Sequelize(config.database, config.username, config.password, config);
+  }
+} catch (error) {
+  console.log(error);
+}
 
 fs.readdirSync(__dirname)
   .filter(file => {
