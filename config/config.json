@@ -2,8 +2,8 @@
   "development": {
     "username": "root",
     "password": "god_speed",
-    "database": "ShopKGP",
-    "host": "localhost",
+    "database": "shopkgp",
+    "host": "db",
     "dialect": "mysql"
   },
   "test": {
