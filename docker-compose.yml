@@ -10,6 +10,8 @@ services:
       MYSQL_ROOT_PASSWORD: god_speed
     networks:
       - shopkgp-net
+    volumes:
+      - ./db:/var/lib/mysql
 
   adminer:
     image: adminer
@@ -34,6 +36,9 @@ services:
       - 3001:3001
     networks:
       - shopkgp-net
+    volumes:
+      - ./app:/home/app/*
+
 
 networks:
   shopkgp-net:
